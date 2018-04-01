@@ -1,0 +1,13 @@
+# build products
+*.pro.user
+buildlog.log
+
+#results from running Application
+results/
+
+# Test items
+GITLESS*
+
+# Mac finder footprint
+.DS_Store
+
