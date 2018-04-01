@@ -22,21 +22,21 @@ Value::Value() {
     clear();
 }
 
-Value::Value( double d ) { setValue(d); }
+Value::Value(const double d) { setValue(d); }
 
-Value::Value( int i )  { setValue(i); }
+Value::Value(const int i)  { setValue(i); }
 
-Value::Value( bool b ) { setValue(b); }
+Value::Value(const bool b) { setValue(b); }
 
-Value::Value( string s ) { setValue(s); }
+Value::Value(const string &s) { setValue(s); }
 
-Value::Value( const char* c ) { setValue(c); }
+Value::Value(const char* c) { setValue(c); }
 
-Value::Value( date D ) { setValue(D); }
+Value::Value(const date &D) { setValue(D); }
 
-Value::Value( const ValuePtr& p )  { (*this) = p; }
+Value::Value(const ValuePtr& p)  { (*this) = p; }
 
-Value::Value( const Value& p ) { (*this) = p; }
+Value::Value(const Value& p) { (*this) = p; }
 
 Value& Value::operator=(const Value& other)  {
     clear();

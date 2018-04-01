@@ -22,9 +22,9 @@ public:
 
 
 private:
-
     QMap<QString, ObjectMgmt::Value *> valueToSerialize;
     ObjectMgmt::Value _number;
+
 
 };
 

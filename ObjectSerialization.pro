@@ -20,11 +20,13 @@ SOURCES += main.cpp \
     ISerializable.cpp \
     Value.cpp \
     ISerializableContainer.cpp \
-    SerializableObj.cpp
+    SerializableObj.cpp \
+    ObjectToSerialize.cpp
 
 HEADERS += \
     test.h \
     ISerializable.h \
     Value.h \
     ISerializableContainer.h \
-    SerializableObj.h
+    SerializableObj.h \
+    ObjectToSerialize.h

@@ -1,12 +1,9 @@
-/*! @file value.h
+/*! @file Value.h
  @brief Representation of a value.
  
  An abstraction to represent value that can take different forms: a number,
  an adjustable parameter, an expression (string), a name (string), a color.
  The value can serialize itself, describe and validate itself.
- 
- @author Enrique Campos-Nanez & Yung-Yeh(Steven) Chang
- @copyright 2014, The Epsilon Group.
  */
 
 #ifndef _VALUE_H
@@ -15,7 +12,6 @@
 #include <string>
 #include <memory>
 #include <cstdint>
-// #include <serial.hpp>
 
 using namespace std;
 
@@ -90,14 +86,14 @@ class Value {
     public:
         // Constructor
         Value();                    // Default constructor will yield UNDEFINED TYPE.
-        Value( double d );          // Double argument constructor
-        Value( string s );          // String argument constructor
-        Value( const char*);        // C-string  argument constructor
-        Value( int i );             // Int argument constructor
-        Value( bool b );            // Bool argument constructor
-        Value( date D );            // Bool argument constructor
-        Value( const ValuePtr& p ); // Clone using shared pointer.
-        Value( const Value& p );    // Clone from another value.
+        Value(const double d);          // Double argument constructor
+        Value(const int i);             // Int argument constructor
+        Value(const bool b);            // Bool argument constructor
+        Value(const string &s);          // String argument constructor
+        Value(const char*);        // C-string  argument constructor
+        Value(const date &D);            // Bool argument constructor
+        Value(const ValuePtr& p); // Clone using shared pointer.
+        Value(const Value& p);    // Clone from another value.
         // Overload operator=
         Value& operator=( const Value& other );     // Copy from another object
         Value& operator=( const ValuePtr& other );  // Copy from a pointer to another object
