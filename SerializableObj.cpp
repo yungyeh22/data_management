@@ -1,4 +1,5 @@
 #include "SerializableObj.h"
+#include "UniversalSerializer.h"
 
 SerializableObj::SerializableObj() {
 }
@@ -16,8 +17,8 @@ void SerializableObj::writeToXml(QDomNode &node) {
     Serialization::UniversalSerializer::writeComponentsToNode(node, *this); // Generic means for write
 }
 
-QMap<QString, ObjectMgmt::Value *>* SerializableObj::serializeElements() {
-    valueToSerialize["number"] = &_number;
+QMap<QString, Serialization::ObjectToSerialize>* SerializableObj::serializeElements() {
+    valueToSerialize["number"] = Serialization::ObjectToSerialize(&_number);
     return &valueToSerialize;
 }
 

@@ -3,7 +3,7 @@
 
 #include <QMap>
 #include <QString>
-#include "Value.h"
+#include "ObjectToSerialize.h"
 
 /* Interface (purely abstract base class) to be realized by serializable objects (see the ISerializable interface) to simplify
  * the process of writing and reading the class's content to and from an XML node.
@@ -20,7 +20,7 @@ class ISerializableContainer {
 
 public:
     virtual ~ISerializableContainer(){;}
-    virtual QMap<QString, ObjectMgmt::Value*>* serializeElements() = 0; // Return a QMap containing the variables that needs to be serialized
+    virtual QMap<QString, ObjectToSerialize>* serializeElements() = 0; // Return a QMap containing the variables that needs to be serialized
 };
 
 }

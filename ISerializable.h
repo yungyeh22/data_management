@@ -2,7 +2,6 @@
 #define ISERIALIZABLE_H
 
 #include <QDomNode>
-#include "ISerializableContainer.h"
 
 namespace Serialization {
 
@@ -31,17 +30,6 @@ public:
     //use the ISerializable object's members to populate elements within the xml node provided.
     virtual void writeToXml(QDomNode &node) = 0;
 };
-
-
-class UniversalSerializer {
-
-public:
-    static bool writeComponentsToNode(QDomNode &node, const ISerializableContainer &container);
-    static bool readComponentsFromNode(const QDomNode &node, ISerializableContainer &container);
-};
-
-
-
 
 }
 

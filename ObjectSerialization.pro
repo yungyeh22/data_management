@@ -21,7 +21,8 @@ SOURCES += main.cpp \
     Value.cpp \
     ISerializableContainer.cpp \
     SerializableObj.cpp \
-    ObjectToSerialize.cpp
+    ObjectToSerialize.cpp \
+    UniversalSerializer.cpp
 
 HEADERS += \
     test.h \
@@ -29,4 +30,5 @@ HEADERS += \
     Value.h \
     ISerializableContainer.h \
     SerializableObj.h \
-    ObjectToSerialize.h
+    ObjectToSerialize.h \
+    UniversalSerializer.h
