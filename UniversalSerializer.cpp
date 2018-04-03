@@ -1,10 +1,9 @@
 #include "UniversalSerializer.h"
 
 #include <QMap>
-#include <QDomnodeList>
+#include <QDomElement>
 #include <QDebug>
 #include "Value.h"
-
 
 namespace Serialization {
 
@@ -23,13 +22,14 @@ bool UniversalSerializer::readComponentsFromNode(const QDomNode &node, ISerializ
             QDomElement itemElement = item.toElement();
             QString tagName = itemElement.tagName();
             QString dataType = itemElement.attribute("type");
-            if ((dataType == QString::fromStdString(ObjectMgmt::kSerializable))) {
-                (*vars)[tagName].serializableItem()->readFromXml(item);
-            }
-            else {
-                QString tagValue = itemElement.text();
-                ObjectMgmt::Value value(tagValue.toStdString());
-                if (vars->contains(tagName) && dataType == QString::fromStdString((*vars)[tagName].typeAsString())) {
+            if (vars->contains(tagName) && dataType == QString::fromStdString((*vars)[tagName].typeAsString())) {
+                if ((dataType == QString::fromStdString(ObjectMgmt::kSerializable))) {
+                    qDebug() << itemElement.text();
+                    (*vars)[tagName].serializableItem()->readFromXml(item);
+                }
+                else {
+                    QString itemValue = itemElement.text();
+                    ObjectMgmt::Value value(itemValue.toStdString());
                     switch((*vars)[tagName].type()) {
                     case (ObjectToSerialize::TYPE::DOUBLE):
                     {
@@ -57,10 +57,10 @@ bool UniversalSerializer::readComponentsFromNode(const QDomNode &node, ISerializ
                     }
                     }
                 }
-                else {
-                    result &= false;
-                    qDebug() << "Failed to assign variable" << tagName << endl;
-                }
+            }
+            else {
+                result &= false;
+                qDebug() << "Failed to assign the tagName:" << tagName << "to an object in a serializable class";
             }
             item = item.nextSibling();
         }
