@@ -12,6 +12,8 @@
 #include <string>
 #include <memory>
 #include <cstdint>
+#include <QDomNode>
+#include "ISerializable.h"
 
 using namespace std;
 
@@ -68,9 +70,10 @@ extern const string kIntAsString;
 extern const string kBoolAsString;
 extern const string kStringAsString;
 extern const string kDateAsString;
+extern const string kSerializable;
 extern const string kUndefinedAsString;
 
-class Value {
+class Value : public Serialization::ISerializable{
     public:
         // Use Strongly typed enum with underlying type int32
         enum class TYPE : int32_t {DOUBLE, INT, BOOL, STRING, DATE, UNDEFINED};
@@ -124,8 +127,10 @@ class Value {
         bool changeType(string typeName);
         // Clear private variables (for initialization)
         void clear();
-//        size_t read  (istream& is);         // Abstract member function  inherited from serial class for input stream
-//        size_t write (ostream& os) const;   // Abstract member function  inherited from serial class for output stream
+
+        // ISerializable Interface
+         void readFromXml(const QDomNode &node);
+         void writeToXml(QDomNode &node);
 
 };
 }
