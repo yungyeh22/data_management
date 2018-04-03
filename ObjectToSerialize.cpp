@@ -3,25 +3,25 @@
 
 namespace Serialization {
 
-string ObjectToSerialize::typeAsString()
-{
-    switch (_type) {
-    case (TYPE::DOUBLE):
+std::string ObjectToSerialize::typeAsString() {
+    switch (_type)
+    {
+    case TYPE::DOUBLE:
         return ObjectMgmt::kDoubleAsString;
-    case (TYPE::INT):
+    case TYPE::INT:
         return ObjectMgmt::kIntAsString;
-    case (TYPE::BOOL):
+    case TYPE::BOOL:
         return ObjectMgmt::kBoolAsString;
-    case (TYPE::STRING):
+    case TYPE::STRING:
         return ObjectMgmt::kIntAsString;
-    case (TYPE::SERIALIZABLE):
+    case TYPE::SERIALIZABLE:
         return ObjectMgmt::kSerializable;
-    case (TYPE::UNDEFINED):
+    case TYPE::UNDEFINED:
+        return ObjectMgmt::kUndefinedAsString;
+    default:
         return ObjectMgmt::kUndefinedAsString;
     }
 }
-
-
 
 }
 
