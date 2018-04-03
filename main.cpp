@@ -28,14 +28,31 @@ int main(int argc, char *argv[])
 
 
     // Serializable object test
-       QString objStr = "<root>\n<Object>\n<number type=\"Int\">789</Time>\n</Object>\n</root>";
+       QString objStr = "<root>\n"
+                        "<object type=\"Serializable\">\n"
+                        "    <number type=\"Double\">123</number>\n"
+                        "    <useTool type=\"Bool\">true</useTool>\n"
+                        "    <otherObj type=\"Serializable\">\n"
+                        "       <number type=\"Double\">789</number>\n"
+                        "       <useTool type=\"Bool\">true</useTool>\n"
+                        "    </otherObj>\n"
+                        "</object>\n"
+                        "</root>\n";
        QDomDocument dom;
        dom.setContent(objStr);
        QDomNode objNode = dom.documentElement().firstChild();
        SerializableObj tObj;
-       tObj.setValue(10.0);
+       tObj.setValue(543.0);
+       tObj.otherObj()->setValue(520);
+       qDebug() << "original" << tObj.number();
+       qDebug() << "original" << tObj.useTool();
+       qDebug() << "original" << tObj.otherObj()->number();
+       qDebug() << "original" << tObj.otherObj()->useTool();
        tObj.readFromXml(objNode);
-       qDebug() << tObj.number();
+       qDebug() << "new" << tObj.number();
+       qDebug() << "new" << tObj.useTool();
+       qDebug() << "new" << tObj.otherObj()->number();
+       qDebug() << "new" << tObj.otherObj()->useTool();
 
     return 1;
     // return a.exec();

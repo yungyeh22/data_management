@@ -9,7 +9,7 @@ namespace Serialization {
 class UniversalSerializer {
 
 public:    
-    static bool writeComponentsToNode(QDomNode &node, const ISerializableContainer &container);
+    static bool writeComponentsToNode(QDomNode &node, ISerializableContainer &container);
     static bool readComponentsFromNode(const QDomNode &node, ISerializableContainer &container);
 };
 

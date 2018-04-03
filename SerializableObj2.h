@@ -1,19 +1,17 @@
-#ifndef SERIALIZABLEOBJ_H
-#define SERIALIZABLEOBJ_H
+#ifndef SERIALIZABLEOBJ2_H
+#define SERIALIZABLEOBJ2_H
 
 #include <QMap>
 #include <QString>
 #include "SerializeCore.h"
-#include "SerializableObj2.h"
 
-class SerializableObj : public Serialization::ISerializable, public Serialization::ISerializableContainer
+class SerializableObj2 : public Serialization::ISerializable, public Serialization::ISerializableContainer
 {
 public:
-    SerializableObj(){;}
+    SerializableObj2(){;}
     setValue(double _val) {_number = _val;}
     double number() {return _number;}
     bool useTool() { return _useTool;}
-    SerializableObj2* otherObj() {return &_obj;}
     // ISerializable Interface
 
     // Standard de-serialization using universal serializer
@@ -25,16 +23,13 @@ public:
     QMap<QString, Serialization::ObjectToSerialize>* serializeElements() {
         ADD_SERIABLE_OBJECT(valueToSerialize,number,_number);
         ADD_SERIABLE_OBJECT(valueToSerialize,useTool,_useTool);
-        ADD_SERIABLE_OBJECT(valueToSerialize,otherObj,_obj);
         return &valueToSerialize;
     }
 
 private:
-    QMap<QString, Serialization::ObjectToSerialize> valueToSerialize;    
+    QMap<QString, Serialization::ObjectToSerialize> valueToSerialize;
     double _number;
     bool _useTool = false;
-    SerializableObj2 _obj;
-
 
 };
 

@@ -8,37 +8,61 @@
 
 namespace Serialization {
 
-bool UniversalSerializer::writeComponentsToNode(QDomNode &node, const ISerializableContainer &container) {
-
-    return false;
+bool UniversalSerializer::writeComponentsToNode(QDomNode &node, ISerializableContainer &container) {
+    bool result = false;
+    const QMap<QString, Serialization::ObjectToSerialize>* vars = container.serializeElements();
+    return result;
 }
 
 bool UniversalSerializer::readComponentsFromNode(const QDomNode &node, ISerializableContainer &container) {
     bool result = true;
     QMap<QString, Serialization::ObjectToSerialize>* vars = container.serializeElements();
-    if (node.toElement().tagName() == "Object") {
-        QDomElement objElement = node.firstChildElement();
-        while (!objElement.isNull()) {
-            QString tagName = objElement.tagName();
-            QString dataType = objElement.attribute("type");
-            QString tagValue = objElement.text();
-            ObjectMgmt::Value value(tagValue.toStdString());
-            qDebug() << tagName << ":" << tagValue;
-            if (vars->contains(tagName)) {
-                value.changeType(dataType.toStdString());
-                if ((*vars)[tagName].type() == Serialization::ObjectToSerialize::TYPE::DOUBLE) {
-                    *(*vars)[tagName].doubleItem() = value.doubleValue();
-                }
-                else {
-
-                }
-                result &= true;
+    if (node.toElement().attribute("type") == QString::fromStdString(ObjectMgmt::kSerializable)) {
+        QDomNode item = node.firstChild();
+        while (!item.isNull()) {
+            QDomElement itemElement = item.toElement();
+            QString tagName = itemElement.tagName();
+            QString dataType = itemElement.attribute("type");
+            if ((dataType == QString::fromStdString(ObjectMgmt::kSerializable))) {
+                (*vars)[tagName].serializableItem()->readFromXml(item);
             }
             else {
-                result &= false;
-                qDebug() << "Failed to assign variable" << tagName << endl;
+                QString tagValue = itemElement.text();
+                ObjectMgmt::Value value(tagValue.toStdString());
+                if (vars->contains(tagName) && dataType == QString::fromStdString((*vars)[tagName].typeAsString())) {
+                    switch((*vars)[tagName].type()) {
+                    case (ObjectToSerialize::TYPE::DOUBLE):
+                    {
+                        *(*vars)[tagName].doubleItem() = value.doubleValue();
+                        break;
+                    }
+                    case (ObjectToSerialize::TYPE::INT):
+                    {
+                        *(*vars)[tagName].intItem() = value.intValue();
+                        break;
+                    }
+                    case (ObjectToSerialize::TYPE::BOOL):
+                    {
+                        *(*vars)[tagName].boolItem() = value.boolValue();
+                        break;
+                    }
+                    case (ObjectToSerialize::TYPE::STRING):
+                    {
+                        *(*vars)[tagName].stringItem() = value.stringValue();
+                        break;
+                    }
+                    default:
+                    {
+                        break;
+                    }
+                    }
+                }
+                else {
+                    result &= false;
+                    qDebug() << "Failed to assign variable" << tagName << endl;
+                }
             }
-            objElement = objElement.nextSibling().toElement();
+            item = item.nextSibling();
         }
     }
     return result;
