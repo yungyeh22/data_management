@@ -9,7 +9,7 @@
 #include "ISerializable.h"
 #include "SerializableObj.h"
 #include "ObjectToSerialize.h"
-#include "Value.h";
+#include "Value.h"
 #include "test.h"
 
 int main(int argc, char *argv[])
@@ -36,6 +36,8 @@ int main(int argc, char *argv[])
                         "       <number type=\"Double\">789</number>\n"
                         "       <useTool type=\"Bool\">true</useTool>\n"
                         "    </otherObj>\n"
+                        "    <myValue type=\"Serializable\">\n"
+                        "    <value type = \"Double\">3.1415</value>\n"
                         "</object>\n"
                         "</root>\n";
        QDomDocument dom;
@@ -48,11 +50,13 @@ int main(int argc, char *argv[])
        qDebug() << "original" << tObj.useTool();
        qDebug() << "original" << tObj.otherObj()->number();
        qDebug() << "original" << tObj.otherObj()->useTool();
+       qDebug() << "original" << tObj.doubleValue().doubleValue();
        tObj.readFromXml(objNode);
        qDebug() << "new" << tObj.number();
        qDebug() << "new" << tObj.useTool();
        qDebug() << "new" << tObj.otherObj()->number();
        qDebug() << "new" << tObj.otherObj()->useTool();
+       qDebug() << "new" << tObj.doubleValue().doubleValue();
 
     return 1;
     // return a.exec();

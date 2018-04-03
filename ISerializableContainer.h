@@ -18,8 +18,17 @@
  * Serializer class must know how to parse the objects in a container.
  */
 
-#define ADD_SERIABLE_OBJECT(storeMap, objectName,object) \
-    storeMap[#objectName] = Serialization::ObjectToSerialize(&object);
+// STANDARD_SERIALIZABLE is a macro to simplify standard serialization process
+#define STANDARD_SERIALIZABLE(storeMap,...) \
+    public: \
+        void readFromXml(const QDomNode &node) {Serialization::UniversalSerializer::readComponentsFromNode(node, *this);} \
+        void writeToXml(QDomNode &node) {Serialization::UniversalSerializer::writeComponentsToNode(node, *this);} \
+        QMap<QString, Serialization::ObjectToSerialize>* serializeElements() { \
+            storeMap = {__VA_ARGS__}; \
+            return &storeMap; \
+        } \
+    private: \
+        QMap<QString, Serialization::ObjectToSerialize> storeMap;
 
 namespace Serialization {
 
