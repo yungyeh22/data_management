@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <iomanip>
 #include <QString>
+#include <QDomDocument>
 #include <QDomElement>
 #include <QDebug>
 #include "Value.h"
@@ -333,7 +334,11 @@ void Value::readFromXml(const QDomNode &node) {
 }
 
 void Value::writeToXml(QDomNode &node) {
-
+    QDomDocument document;
+    QDomElement item = document.createElement("Value");
+    item.setAttribute("datatype", QString::fromStdString(typeAsString()));
+    item.appendChild(document.createTextNode(QString::fromStdString(stringValue())));
+    node.appendChild(item);
 }
 
 //size_type Value::write (ostream& os)  const {
