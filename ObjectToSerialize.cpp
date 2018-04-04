@@ -3,7 +3,7 @@
 
 namespace Serialization {
 
-std::string ObjectToSerialize::typeAsString() {
+std::string ObjectToSerialize::typeAsString() const {
     switch (_type)
     {
     case TYPE::DOUBLE:

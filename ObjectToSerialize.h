@@ -24,13 +24,13 @@ public:
     ObjectToSerialize(std::string* s) : _s(s) { _type = TYPE::STRING; }
     ObjectToSerialize(ISerializable* serializable) : _serializable(serializable) { _type = TYPE::SERIALIZABLE; }
 
-    TYPE type(){return _type;}    
-    double* doubleItem() {return _d;}
-    int* intItem() {return _i;}
-    bool* boolItem() {return _b;}
-    std::string* stringItem() {return _s;}
-    ISerializable* serializableItem() {return _serializable;}
-    std::string typeAsString();
+    TYPE type() const {return _type;}
+    double* doubleItem() const {return _d;}
+    int* intItem() const {return _i;}
+    bool* boolItem() const {return _b;}
+    std::string* stringItem() const {return _s;}
+    ISerializable* serializableItem() const {return _serializable;}
+    std::string typeAsString() const;
 
 private:
     TYPE _type;
