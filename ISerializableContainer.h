@@ -19,6 +19,15 @@
  */
 
 // STANDARD_SERIALIZABLE is a macro to simplify standard serialization process
+// Syntax:
+// STANDARD_SERIALIZABLE(the_map_storing_object_name_and_pointer,
+//     {object_name1, object_pointer1},{object_name2, object_pointer2}...
+// Example:
+// STANDARD_SERIALIZABLE(valueToSerialize,
+//    {"number",&_number},
+//    {"useTool",&_useTool},
+//    {"otherObj",&_obj},
+//    {"myValue",&_doubleValue})
 #define STANDARD_SERIALIZABLE(storeMap,...) \
     public: \
         void readFromXml(const QDomNode &node) {Serialization::UniversalSerializer::readComponentsFromNode(node, *this);} \
