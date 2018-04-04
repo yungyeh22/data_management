@@ -320,7 +320,7 @@ void Value::clear() {
 }
 
 void Value::readFromXml(const QDomNode &node) {
-    if (node.toElement().attribute("type") == QString::fromStdString(kSerializable)) {
+    if (node.toElement().attribute("datatype") == QString::fromStdString(kSerializable)) {
         QDomElement itemElement = node.firstChild().toElement();
         QString dataType = itemElement.attribute("type");
         QString itemValue = itemElement.text();
