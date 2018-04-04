@@ -23,8 +23,9 @@ public:
     virtual ~ISerializable(){;}
 
     //populate the ISerializable object's members with data extracted from the given xml node.
-    // It uses pure virtual to force implementation because this way  allows pre/post processing
-    // before/after read from xml node.
+    // It uses pure virtual to force implementation (this way forces implementation for pre/post
+    // processing before/after read from xml node. The macro STANDARD_SERIALIZABLE may be helpful
+    // for standard read/write procee. See ISerializableContainer class)
     virtual void readFromXml(const QDomNode &node) = 0;
 
     //use the ISerializable object's members to populate elements within the xml node provided.
