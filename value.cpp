@@ -341,11 +341,5 @@ void Value::writeToXml(QDomNode &node) {
     node.appendChild(item);
 }
 
-//size_type Value::write (ostream& os)  const {
-//    // XML tag output
-//    os << serial::serialPair(to_string((int)t),stringValue(), "Value", "type");
-//    return (int)os.tellp(); // Not really the case. Just temporary set as size of string
-//}
-
 }
 

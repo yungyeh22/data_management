@@ -22,7 +22,7 @@ private:
     double _number;
     bool _useTool = false;
     SerializableObj2 _obj;
-    ObjectMgmt::Value _doubleValue = 1.234567;
+    ObjectMgmt::Value _doubleValue = 1.23456;
 
     // Standard ISerializable Interface
     STANDARD_SERIALIZABLE(valueToSerialize,
