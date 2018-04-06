@@ -43,13 +43,15 @@ public:
     QString filename() const { return _fullFilePath; } // Get current associated file name
     bool fileExists() const;
 
-public:
+public: // Static methods
+    // Get an empty node with appropriate tag name. If it's for a serializable object, the node attach datatype="Serializable" atttribute.
     static QDomNode createNode(const QString &name = "Case", const bool &serializable = true);
 
 private:
     QString _fullFilePath;
     QDomDocument _dom;
     void createRootNode();
+    int findNodeByName(const QDomNodeList &nodes,  const QString &nodeName);
 };
 }
 

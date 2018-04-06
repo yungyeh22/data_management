@@ -91,12 +91,12 @@ void XmlUtility::appendToRootNode(const QDomNode &node) {
     if (_dom.documentElement().isNull()) {
         createRootNode();
     }
-    _dom.firstChild().appendChild(node);
+    _dom.documentElement().appendChild(node);
 }
 
 bool XmlUtility::appendToCaseNodeByIndex(const QDomNode &node, const int &n) {
     bool result = true;
-    QDomNode nNode = _dom.firstChild().childNodes().at(n);
+    QDomNode nNode = _dom.documentElement().firstChild().childNodes().at(n);
     result &= !nNode.isNull();
     if (result) {
         nNode.appendChild(node);
@@ -109,24 +109,35 @@ bool XmlUtility::appendToCaseNodeByIndex(const QDomNode &node, const int &n) {
 
 bool XmlUtility::appendToCaseNodeByName(const QDomNode &node, const QString &nodeName) {
     bool result = true;
-    QDomNodeList nodes = _dom.firstChild().childNodes();
-    if (result &= nodes.size()) {
-        int idx;
-        for ( idx = 0 ; idx < nodes.size() ; ++idx) {
-            if (nodes.at(idx).toElement().tagName() == nodeName) {
-                break;
-            }
-        }
-        if (result &= (idx != nodes.size())) {
-            nodes.at(idx).appendChild(node);
-        }
-        else {
-            qDebug() << "Node couldn't be found!";
-        }
+    QDomNodeList nodes = _dom.documentElement().firstChild().childNodes();
+    int idx = findNodeByName(nodes,nodeName);
+    if (result &= (idx > 0)) {
+        nodes.at(idx).appendChild(node);
     }
-    else {
-        qDebug() << "Node does not exist.";
-    }
+    return result;
+}
+
+bool XmlUtility::replaceCaseNodeByIndex(const QDomNode &node, const int &n)
+{
+    bool result = true;
+    return result;
+}
+
+bool XmlUtility::replaceCaseNodeByName(const QDomNode &node, const QString &nodeName)
+{
+    bool result = true;
+    return result;
+}
+
+bool XmlUtility::removeCaseNodeByIndex(const QDomNode &node, const int &n)
+{
+    bool result = true;
+    return result;
+}
+
+bool XmlUtility::removeCaseNodeByName(const QDomNode &node, const QString &nodeName)
+{
+    bool result = true;
     return result;
 }
 
@@ -148,6 +159,24 @@ QDomNode XmlUtility::createNode(const QString &name, const bool &serializable) {
 void XmlUtility::createRootNode() {
     QDomElement rootNodeElement = _dom.createElement("root");
     _dom.appendChild(rootNodeElement);
+}
+
+int XmlUtility::findNodeByName(const QDomNodeList &nodes, const QString &nodeName) {
+    int idx= -1;
+    if (nodes.size()) {
+        for ( idx = 0 ; idx < nodes.size() ; ++idx) {
+            if (nodes.at(idx).toElement().tagName() == nodeName) {
+                break;
+            }
+        }
+        if (idx == nodes.size()) {
+            idx = -1;
+            qDebug() << "Node couldn't be found!";
+        }
+    }
+    else {
+        qDebug() << "Node does not exist.";
+    }
 }
 
 }
