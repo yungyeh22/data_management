@@ -23,7 +23,8 @@ SOURCES += main.cpp \
     SerializableObj.cpp \
     ObjectToSerialize.cpp \
     UniversalSerializer.cpp \
-    SerializableObj2.cpp
+    SerializableObj2.cpp \
+    XmlUtility.cpp
 
 HEADERS += \
     test.h \
@@ -34,4 +35,5 @@ HEADERS += \
     ObjectToSerialize.h \
     UniversalSerializer.h \
     SerializableObj2.h \
-    SerializeCore.h
+    SerializeCore.h \
+    XmlUtility.h
