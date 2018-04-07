@@ -30,14 +30,12 @@ public:
     bool saveDomToFile();
     bool saveDomToFile(const QString &fullFilePath); // This action will result in file name change
     bool setFileName(const QString &fullFilePath);
-    // Node operations (append to, replace, remove). Insert is not necessary because the order is not important.
-    void appendToRootNode(const QDomNode &node);
-    bool appendToCaseNodeByIndex(const QDomNode &node, const int &n);
-    bool appendToCaseNodeByName(const QDomNode &node, const QString &nodeName);
-    bool replaceCaseNodeByIndex(const QDomNode &node, const int &n);
-    bool replaceCaseNodeByName(const QDomNode &node, const QString &nodeName);
-    bool removeCaseNodeByIndex(const QDomNode &node, const int &n);
-    bool removeCaseNodeByName(const QDomNode &node, const QString &nodeName);
+    // Node operations (append to, replace, remove, insert)
+    void appendCaseNode(const QDomNode &node);
+    bool appendChildToCaseNode(const QDomNode &node, const int &n);
+    bool reorderCaseNode(const int &oldPos, const int &newPos);
+    bool replaceCaseNode(const QDomNode &node, const int &n);
+    bool removeCaseNode(const int &n);
 
     const QDomNode* dom() const { return &_dom; } // Get document node. It returns a const object so external operation won't mess up the node structure.
     QString filename() const { return _fullFilePath; } // Get current associated file name
@@ -51,7 +49,7 @@ private:
     QString _fullFilePath;
     QDomDocument _dom;
     void createRootNode();
-    int findNodeByName(const QDomNodeList &nodes,  const QString &nodeName);
+
 };
 }
 

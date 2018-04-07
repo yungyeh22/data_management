@@ -87,14 +87,14 @@ bool XmlUtility::setFileName(const QString &fullFilePath) {
     return loadDomFromFile();
 }
 
-void XmlUtility::appendToRootNode(const QDomNode &node) {
+void XmlUtility::appendCaseNode(const QDomNode &node) {
     if (_dom.documentElement().isNull()) {
         createRootNode();
     }
     _dom.documentElement().appendChild(node);
 }
 
-bool XmlUtility::appendToCaseNodeByIndex(const QDomNode &node, const int &n) {
+bool XmlUtility::appendChildToCaseNode(const QDomNode &node, const int &n) {
     bool result = true;
     QDomNode nNode = _dom.documentElement().firstChild().childNodes().at(n);
     result &= !nNode.isNull();
@@ -102,42 +102,64 @@ bool XmlUtility::appendToCaseNodeByIndex(const QDomNode &node, const int &n) {
         nNode.appendChild(node);
     }
     else {
-        qDebug() << "Node does not exist.";
+        qDebug() << "Node does not exist!";
     }
     return result;
 }
 
-bool XmlUtility::appendToCaseNodeByName(const QDomNode &node, const QString &nodeName) {
+bool XmlUtility::reorderCaseNode(const int &oldPos, const int &newPos) {
     bool result = true;
-    QDomNodeList nodes = _dom.documentElement().firstChild().childNodes();
-    int idx = findNodeByName(nodes,nodeName);
-    if (result &= (idx > 0)) {
-        nodes.at(idx).appendChild(node);
+    QDomNodeList nodes = _dom.documentElement().childNodes();
+    QDomNode cNodeOldPos = nodes.at(oldPos);
+    QDomNode cNodeNewPos = nodes.at(newPos);
+    result &= !cNodeOldPos.isNull();
+    if (!result) {
+        qDebug() << "Invalid original index!";
+    }
+    result &= !cNodeNewPos.isNull();
+    if (!result) {
+        qDebug() << "Invalid new index!";
+    }
+    if (result) {
+        if (oldPos > newPos) {
+            QDomNode newRefNode = cNodeNewPos.parentNode().insertBefore(cNodeOldPos,cNodeNewPos);
+            result &= !newRefNode.isNull();
+        }
+        else if (oldPos < newPos) {
+            QDomNode newRefNode = cNodeNewPos.parentNode().insertAfter(cNodeOldPos,cNodeNewPos);
+            result &= !newRefNode.isNull();
+        }
+    }
+    else {
+        qDebug() << "Failed to reorder node!";
     }
     return result;
 }
 
-bool XmlUtility::replaceCaseNodeByIndex(const QDomNode &node, const int &n)
-{
+bool XmlUtility::replaceCaseNode(const QDomNode &node, const int &n) {
     bool result = true;
+    QDomNode oldNode = _dom.documentElement().childNodes().at(n);
+    result &= !oldNode.isNull();
+
+    if (result) {
+        oldNode.parentNode().replaceChild(node,oldNode);
+    }
+    else {
+        qDebug() << "Invalid index!\nFailed to replace node!";
+    }
     return result;
 }
 
-bool XmlUtility::replaceCaseNodeByName(const QDomNode &node, const QString &nodeName)
-{
+bool XmlUtility::removeCaseNode(const int &n) {
     bool result = true;
-    return result;
-}
-
-bool XmlUtility::removeCaseNodeByIndex(const QDomNode &node, const int &n)
-{
-    bool result = true;
-    return result;
-}
-
-bool XmlUtility::removeCaseNodeByName(const QDomNode &node, const QString &nodeName)
-{
-    bool result = true;
+    QDomNode cNode = _dom.documentElement().childNodes().at(n);
+    result &= !cNode.isNull();
+    if (result) {
+        cNode.parentNode().removeChild(cNode);
+    }
+    else {
+        qDebug() << "Invalid index!\nFailed to remove node!";
+    }
     return result;
 }
 
@@ -161,22 +183,5 @@ void XmlUtility::createRootNode() {
     _dom.appendChild(rootNodeElement);
 }
 
-int XmlUtility::findNodeByName(const QDomNodeList &nodes, const QString &nodeName) {
-    int idx= -1;
-    if (nodes.size()) {
-        for ( idx = 0 ; idx < nodes.size() ; ++idx) {
-            if (nodes.at(idx).toElement().tagName() == nodeName) {
-                break;
-            }
-        }
-        if (idx == nodes.size()) {
-            idx = -1;
-            qDebug() << "Node couldn't be found!";
-        }
-    }
-    else {
-        qDebug() << "Node does not exist.";
-    }
-}
 
 }
