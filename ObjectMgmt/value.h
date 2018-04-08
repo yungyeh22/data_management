@@ -13,7 +13,7 @@
 #include <memory>
 #include <cstdint>
 #include <QDomNode>
-#include "ISerializable.h"
+#include "Serialization/ISerializable.h"
 
 using namespace std;
 

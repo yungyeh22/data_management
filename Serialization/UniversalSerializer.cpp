@@ -4,7 +4,7 @@
 #include <QDomElement>
 #include <QDomDocument>
 #include <QDebug>
-#include "Value.h"
+#include "ObjectMgmt/Value.h"
 
 namespace Serialization {
 

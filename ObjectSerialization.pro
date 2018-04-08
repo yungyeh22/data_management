@@ -16,24 +16,26 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += main.cpp \
-    test.cpp \
-    ISerializable.cpp \
-    Value.cpp \
-    ISerializableContainer.cpp \
-    SerializableObj.cpp \
-    ObjectToSerialize.cpp \
-    UniversalSerializer.cpp \
-    SerializableObj2.cpp \
-    XmlUtility.cpp
+    Test\test.cpp \
+    Serialization\ISerializable.cpp \
+    ObjectMgmt\Value.cpp \
+    Serialization\ISerializableContainer.cpp \
+    Test\SerializableObj.cpp \
+    Serialization\ObjectToSerialize.cpp \
+    Serialization\UniversalSerializer.cpp \
+    Test\SerializableObj2.cpp \
+    Serialization\XmlUtility.cpp \
+    ObjectMgmt\PObject.cpp
 
 HEADERS += \
-    test.h \
-    ISerializable.h \
-    Value.h \
-    ISerializableContainer.h \
-    SerializableObj.h \
-    ObjectToSerialize.h \
-    UniversalSerializer.h \
-    SerializableObj2.h \
+    Test\test.h \
+    Serialization\ISerializable.h \
+    ObjectMgmt\Value.h \
+    Serialization\ISerializableContainer.h \
+    Test\SerializableObj.h \
+    Serialization\ObjectToSerialize.h \
+    Serialization\UniversalSerializer.h \
+    Test\SerializableObj2.h \
     SerializeCore.h \
-    XmlUtility.h
+    Serialization\XmlUtility.h \
+    ObjectMgmt\PObject.h

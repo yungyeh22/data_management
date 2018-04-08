@@ -7,7 +7,7 @@
 #include <QDomDocument>
 #include <QDomElement>
 #include <QDebug>
-#include "Value.h"
+#include "ObjectMgmt/Value.h"
 
 using namespace std;
 
