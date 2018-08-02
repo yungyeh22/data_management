@@ -3,7 +3,11 @@
 #include <limits>
 #include <algorithm>
 #include <iomanip>
-#include "Value.h"
+#include <QString>
+#include <QDomDocument>
+#include <QDomElement>
+#include <QDebug>
+#include "ObjectMgmt/Value.h"
 
 using namespace std;
 
@@ -15,6 +19,7 @@ const string kIntAsString = "Int" ;
 const string kBoolAsString = "Bool" ;
 const string kStringAsString = "String" ;
 const string kDateAsString = "Date" ;
+const string kSerializable = "Serializable";
 const string kUndefinedAsString = "Undefined Type" ;
 
 // Constructor
@@ -22,21 +27,21 @@ Value::Value() {
     clear();
 }
 
-Value::Value( double d ) { setValue(d); }
+Value::Value(const double d) { setValue(d); }
 
-Value::Value( int i )  { setValue(i); }
+Value::Value(const int i)  { setValue(i); }
 
-Value::Value( bool b ) { setValue(b); }
+Value::Value(const bool b) { setValue(b); }
 
-Value::Value( string s ) { setValue(s); }
+Value::Value(const string &s) { setValue(s); }
 
-Value::Value( const char* c ) { setValue(c); }
+Value::Value(const char* c) { setValue(c); }
 
-Value::Value( date D ) { setValue(D); }
+Value::Value(const date &D) { setValue(D); }
 
-Value::Value( const ValuePtr& p )  { (*this) = p; }
+Value::Value(const ValuePtr& p)  { (*this) = p; }
 
-Value::Value( const Value& p ) { (*this) = p; }
+Value::Value(const Value& p) { (*this) = p; }
 
 Value& Value::operator=(const Value& other)  {
     clear();
@@ -173,7 +178,11 @@ string Value::stringValue() const {
             case TYPE::INT:
                 ss << _i ; break;
             case TYPE::BOOL:
-                ss << _b ; break;
+            {
+                string bs = (_b) ? "true" : "false";
+                ss << bs;
+                break;
+            }
             case TYPE::DATE:
                 ss << _D.month << " " << _D.day << ", " << _D.year; break;
             default:
@@ -310,63 +319,27 @@ void Value::clear() {
     _D = date();
 }
 
-//size_type Value::read  (istream& is) {
-//    int type;
-//    size_type ks, kl, vs, vl;
-//    string content;
-//    stringstream ss;
-//    getline(is,content);
-//    // Parse XML, obviously the bad way, not generic.
-//    if ((content.find("<Value>") != string::npos) || (content.find("</Value>") != string::npos)) {
-//        serial::deSerialPair(content,ks,kl,vs,vl);
-//        type = stoi(content.substr(ks,kl));
-//        content = content.substr(vs,vl);
-//        ss << content;
-//        t = (TYPE)type;
-//        switch (t) {
-//            case TYPE::DOUBLE:
-//            {
-//                ss >> d;
-//                break;
-//            }
-//            case TYPE::INT:
-//            {
-//                ss >> i;
-//                break;
-//            }
-//            case TYPE::STRING:
-//            {
-//                s = content;
-//                break;
-//            }
-//            case TYPE::BOOL:
-//            {
-//                ss >> b;
-//            }
-//            case TYPE::DATE:
-//            {
-//                ss >> D.month;
-//                ss.get();
-//                ss >> D.day;
-//                ss.get();
-//                ss.get();
-//                ss >> D.year;
-//            }
-//            default:
-//            {
-//                break;
-//            }
-//        }
-//        read(is); // need to setup error codes and return it
-//    }
-//    return 1000;
-//}
+void Value::readFromXml(const QDomNode &node) {
+    if (node.toElement().attribute("datatype") == QString::fromStdString(kSerializable)) {
+        QDomElement itemElement = node.firstChild().toElement();
+        QString dataType = itemElement.attribute("type");
+        QString itemValue = itemElement.text();
+        Value value = itemValue.toStdString();
+        value.changeType(dataType.toStdString());
+        setValue(value);
+    }
+    else {
+        qDebug() << "Faile to de-serialize Value from xml";
+    }
+}
 
-//size_type Value::write (ostream& os)  const {
-//    // XML tag output
-//    os << serial::serialPair(to_string((int)t),stringValue(), "Value", "type");
-//    return (int)os.tellp(); // Not really the case. Just temporary set as size of string
-//}
+void Value::writeToXml(QDomNode &node) {
+    QDomDocument document;
+    QDomElement item = document.createElement("Value");
+    item.setAttribute("datatype", QString::fromStdString(typeAsString()));
+    item.appendChild(document.createTextNode(QString::fromStdString(stringValue())));
+    node.appendChild(item);
+}
 
 }
 

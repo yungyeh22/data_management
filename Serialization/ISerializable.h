@@ -2,7 +2,6 @@
 #define ISERIALIZABLE_H
 
 #include <QDomNode>
-#include "ISerializableContainer.h"
 
 namespace Serialization {
 
@@ -23,23 +22,15 @@ class ISerializable {
 public:
     virtual ~ISerializable(){;}
 
-    //populate the ISerializable object's members with data extracted from the given xml node.
+    // Populate the ISerializable object's members with data extracted from the given xml node.
+    // It uses pure virtual to force implementation (this way forces implementation for pre/post
+    // processing before/after read from xml node. The macro STANDARD_SERIALIZABLE may be helpful
+    // for standard read/write process. See ISerializableContainer class)
     virtual void readFromXml(const QDomNode &node) = 0;
 
     //use the ISerializable object's members to populate elements within the xml node provided.
     virtual void writeToXml(QDomNode &node) = 0;
 };
-
-
-class UniversalSerializer {
-
-public:
-    static bool writeComponentsToNode(QDomNode &node, const ISerializableContainer &container);
-    static bool readComponentsFromNode(const QDomNode &node, ISerializableContainer &container);
-};
-
-
-
 
 }
 

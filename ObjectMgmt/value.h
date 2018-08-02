@@ -1,12 +1,9 @@
-/*! @file value.h
+/*! @file Value.h
  @brief Representation of a value.
  
  An abstraction to represent value that can take different forms: a number,
  an adjustable parameter, an expression (string), a name (string), a color.
  The value can serialize itself, describe and validate itself.
- 
- @author Enrique Campos-Nanez & Yung-Yeh(Steven) Chang
- @copyright 2014, The Epsilon Group.
  */
 
 #ifndef _VALUE_H
@@ -15,7 +12,8 @@
 #include <string>
 #include <memory>
 #include <cstdint>
-// #include <serial.hpp>
+#include <QDomNode>
+#include "Serialization/ISerializable.h"
 
 using namespace std;
 
@@ -72,9 +70,10 @@ extern const string kIntAsString;
 extern const string kBoolAsString;
 extern const string kStringAsString;
 extern const string kDateAsString;
+extern const string kSerializable;
 extern const string kUndefinedAsString;
 
-class Value {
+class Value : public Serialization::ISerializable{
     public:
         // Use Strongly typed enum with underlying type int32
         enum class TYPE : int32_t {DOUBLE, INT, BOOL, STRING, DATE, UNDEFINED};
@@ -90,14 +89,14 @@ class Value {
     public:
         // Constructor
         Value();                    // Default constructor will yield UNDEFINED TYPE.
-        Value( double d );          // Double argument constructor
-        Value( string s );          // String argument constructor
-        Value( const char*);        // C-string  argument constructor
-        Value( int i );             // Int argument constructor
-        Value( bool b );            // Bool argument constructor
-        Value( date D );            // Bool argument constructor
-        Value( const ValuePtr& p ); // Clone using shared pointer.
-        Value( const Value& p );    // Clone from another value.
+        Value(const double d);          // Double argument constructor
+        Value(const int i);             // Int argument constructor
+        Value(const bool b);            // Bool argument constructor
+        Value(const string &s);          // String argument constructor
+        Value(const char*);        // C-string  argument constructor
+        Value(const date &D);            // Bool argument constructor
+        Value(const ValuePtr& p); // Clone using shared pointer.
+        Value(const Value& p);    // Clone from another value.
         // Overload operator=
         Value& operator=( const Value& other );     // Copy from another object
         Value& operator=( const ValuePtr& other );  // Copy from a pointer to another object
@@ -128,8 +127,10 @@ class Value {
         bool changeType(string typeName);
         // Clear private variables (for initialization)
         void clear();
-//        size_t read  (istream& is);         // Abstract member function  inherited from serial class for input stream
-//        size_t write (ostream& os) const;   // Abstract member function  inherited from serial class for output stream
+
+        // ISerializable Interface
+         void readFromXml(const QDomNode &node);
+         void writeToXml(QDomNode &node);
 
 };
 }
