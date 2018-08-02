@@ -25,7 +25,11 @@ SOURCES += main.cpp \
     Serialization\UniversalSerializer.cpp \
     Test\SerializableObj2.cpp \
     Serialization\XmlUtility.cpp \
-    ObjectMgmt\PObject.cpp
+    ObjectMgmt\PObject.cpp \
+    ObjectMgmt/PObjectContainer.cpp \
+    ObjectMgmt/PObjectIdRegister.cpp \
+    ObjectMgmt/DataObj.cpp \
+    PSum.cpp
 
 HEADERS += \
     Test\test.h \
@@ -38,4 +42,8 @@ HEADERS += \
     Test\SerializableObj2.h \
     SerializeCore.h \
     Serialization\XmlUtility.h \
-    ObjectMgmt\PObject.h
+    ObjectMgmt\PObject.h \
+    ObjectMgmt/PObjectContainer.h \
+    ObjectMgmt/PObjectIdRegister.h \
+    ObjectMgmt/DataObj.h \
+    PSum.h
